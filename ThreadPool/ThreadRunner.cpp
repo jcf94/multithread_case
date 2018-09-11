@@ -6,9 +6,6 @@ PROG   : THREADRUNNER
 
 #include "ThreadRunner.h"
 
-#include <functional>
-#include <mutex>
-
 void ThreadRunner::operator()()
 {
     std::function<void()> task;

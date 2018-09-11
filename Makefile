@@ -7,7 +7,7 @@
 CC=g++
 #FLAG=-g
 
-SRCS=$(wildcard *.cpp)
+SRCS=$(wildcard *.cpp */*.cpp)
 OBJS=$(patsubst %.cpp, %.o, $(SRCS))
 TARGET=$(patsubst %.cpp, %, $(SRCS))
 
