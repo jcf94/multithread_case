@@ -23,25 +23,8 @@ public:
     ~ThreadPool();
 
     template<class Function, class... Args>
-    std::future<RETURN_TYPE> add_task(Function&& f, Args&&... args)
-    {
-        auto task = std::make_shared<std::packaged_task<RETURN_TYPE()>>(
-            std::bind(std::forward<Function>(f), std::forward<Args>(args)...));
-        
-        std::future<RETURN_TYPE> res = task->get_future();
+    std::future<RETURN_TYPE> add_task(Function&& f, Args&&... args);
 
-        {
-            std::unique_lock<std::mutex> lock(tasks_mutex_);
-
-            if (stop_) throw std::runtime_error("ThreadPool is stopped.");
-
-            tasks_.emplace([task](){(*task)();});
-        }
-
-        cv_.notify_one();
-
-        return res;
-    }
     void wait();
 
 private:
@@ -54,5 +37,26 @@ private:
     std::condition_variable cv_;
     bool stop_;
 };
+
+template<class Function, class... Args>
+std::future<RETURN_TYPE> ThreadPool::add_task(Function&& f, Args&&... args)
+{
+    auto task = std::make_shared<std::packaged_task<RETURN_TYPE()>>(
+        std::bind(std::forward<Function>(f), std::forward<Args>(args)...));
+    
+    std::future<RETURN_TYPE> res = task->get_future();
+
+    {
+        std::unique_lock<std::mutex> lock(tasks_mutex_);
+
+        if (stop_) throw std::runtime_error("ThreadPool is stopped.");
+
+        tasks_.emplace([task](){(*task)();});
+    }
+
+    cv_.notify_one();
+
+    return res;
+}
 
 #endif // !THREADPOOL_H
