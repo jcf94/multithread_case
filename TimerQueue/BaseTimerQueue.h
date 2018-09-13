@@ -26,11 +26,6 @@ struct Timer
 {
     int64_t time = 0;
     std::function<void()> func;
-
-    friend bool operator < (Timer a, Timer b)
-    {
-        return a.time > b.time;
-    }
 };
 
 class BaseTimerQueue

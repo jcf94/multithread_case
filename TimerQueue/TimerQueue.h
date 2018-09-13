@@ -19,6 +19,14 @@ enum eStatus
     IDLE, WORKING, ENDING
 };
 
+struct cmp
+{
+    bool operator()(Timer a, Timer b)
+    {
+        return a.time > b.time;
+    }
+};
+
 class TimerQueue: public BaseTimerQueue
 {
 public:
@@ -37,7 +45,7 @@ private:
     ThreadPool& pool_;
 
     std::mutex list_mutex_;
-    std::priority_queue<Timer> list_;
+    std::priority_queue<Timer, std::vector<Timer>, cmp> list_;
 
     std::mutex engine_mutex_;
     std::thread* engine_thread_;
