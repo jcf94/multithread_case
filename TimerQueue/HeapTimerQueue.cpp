@@ -78,7 +78,7 @@ void HeapTimerQueue::flush_queue()
     std::lock_guard<std::mutex> lock(list_mutex_);
     while (!list_.empty())
     {
-        int64_t current_time = Clock::get_CurrentTime();
+        int64_t current_time = get_CurrentTime();
         const Timer& now = list_.top();
         if (now.time <= current_time)
         {
@@ -92,7 +92,7 @@ void HeapTimerQueue::add_Timer(int wait_time_s, std::function<void()> func)
 {
     if (engine_status_ != ENDING)
     {
-        int64_t start_time = Clock::get_CurrentTime();
+        int64_t start_time = get_CurrentTime();
 
         std::lock_guard<std::mutex> lock(list_mutex_);
         list_.push({start_time + wait_time_s*1000, func});

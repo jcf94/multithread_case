@@ -14,11 +14,6 @@ PROG   : HEAPTIMERQUEUE_H
 #include "BaseTimerQueue.h"
 #include "../ThreadPool/ThreadPool.h"
 
-enum eStatus
-{
-    IDLE, WORKING, ENDING
-};
-
 struct cmp
 {
     bool operator()(Timer a, Timer b)

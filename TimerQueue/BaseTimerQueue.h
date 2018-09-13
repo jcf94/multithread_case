@@ -11,16 +11,16 @@ PROG   : BASE_TIMERQUEUE_H
 #include <functional>
 #include <chrono>
 
-namespace Clock
-{
-
 static int64_t get_CurrentTime()
 {
     auto now = std::chrono::system_clock::now();
     return std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
 }
 
-}
+enum eStatus
+{
+    IDLE, WORKING, ENDING
+};
 
 struct Timer
 {
