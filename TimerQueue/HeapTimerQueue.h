@@ -1,11 +1,11 @@
 /* ***********************************************
 MYID   : Chen Fan
 LANG   : G++
-PROG   : TIMERQUEUE_H
+PROG   : HEAPTIMERQUEUE_H
 ************************************************ */
 
-#ifndef TIMERQUEUE_H
-#define TIMERQUEUE_H
+#ifndef HEAPTIMERQUEUE_H
+#define HEAPTIMERQUEUE_H
 
 #include <queue>
 #include <mutex>
@@ -27,11 +27,11 @@ struct cmp
     }
 };
 
-class TimerQueue: public BaseTimerQueue
+class HeapTimerQueue: public BaseTimerQueue
 {
 public:
-    TimerQueue(ThreadPool& pool);
-    ~TimerQueue();
+    HeapTimerQueue(ThreadPool& pool);
+    ~HeapTimerQueue();
 
     void start_Engine();
     void stop_Engine(bool force = false);
@@ -52,4 +52,4 @@ private:
     eStatus engine_status_;
 };
 
-#endif // !TIMERQUEUE_H
+#endif // !HEAPTIMERQUEUE_H

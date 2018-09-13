@@ -1,22 +1,22 @@
 /* ***********************************************
 MYID   : Chen Fan
 LANG   : G++
-PROG   : TIMERQUEUE
+PROG   : HEAPTIMERQUEUE
 ************************************************ */
 
 #include <stdio.h>
 
-#include "TimerQueue.h"
+#include "HeapTimerQueue.h"
 
-TimerQueue::TimerQueue(ThreadPool& pool)
+HeapTimerQueue::HeapTimerQueue(ThreadPool& pool)
     : pool_(pool), engine_thread_(NULL), engine_status_(IDLE) {}
 
-TimerQueue::~TimerQueue()
+HeapTimerQueue::~HeapTimerQueue()
 {
     if (engine_status_ != IDLE) stop_Engine(true);
 }
 
-void TimerQueue::start_Engine()
+void HeapTimerQueue::start_Engine()
 {
     if (engine_status_ != IDLE)
     {
@@ -37,7 +37,7 @@ void TimerQueue::start_Engine()
         });
 }
 
-void TimerQueue::stop_Engine(bool force)
+void HeapTimerQueue::stop_Engine(bool force)
 {
     if (engine_status_ != WORKING)
     {
@@ -60,7 +60,7 @@ void TimerQueue::stop_Engine(bool force)
     engine_thread_->join();
 }
 
-bool TimerQueue::check_Engine()
+bool HeapTimerQueue::check_Engine()
 {
     std::lock_guard<std::mutex> lock(engine_mutex_);
 
@@ -73,7 +73,7 @@ bool TimerQueue::check_Engine()
     return true;
 }
 
-void TimerQueue::flush_queue()
+void HeapTimerQueue::flush_queue()
 {
     std::lock_guard<std::mutex> lock(list_mutex_);
     while (!list_.empty())
@@ -88,7 +88,7 @@ void TimerQueue::flush_queue()
     }
 }
 
-void TimerQueue::add_Timer(int wait_time, std::function<void()> func)
+void HeapTimerQueue::add_Timer(int wait_time, std::function<void()> func)
 {
     if (engine_status_ != ENDING)
     {

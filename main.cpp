@@ -12,7 +12,7 @@ PROG    : MAIN
 #include <chrono>
 
 #include "ThreadPool/ThreadPool.h"
-#include "TimerQueue/TimerQueue.h"
+#include "TimerQueue/HeapTimerQueue.h"
 
 using namespace std;
 
@@ -31,7 +31,7 @@ int main()
 
     // ------------------------------
 
-    TimerQueue timequeue(pool);
+    HeapTimerQueue timequeue(pool);
 
     timequeue.start_Engine();
 
