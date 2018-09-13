@@ -11,22 +11,22 @@ ThreadPool::ThreadPool(int num_threads)
 {
     for (int i=0;i<num_threads;i++)
         runners_.emplace_back([this]()
-        {
-            for (;;)
             {
-                std::function<void()> task;
+                for (;;)
                 {
-                    std::unique_lock<std::mutex> lock(this->tasks_mutex_);
-                    this->cv_.wait(lock,
-                        [this]{return this->stop_ || !this->tasks_.empty();});
-                    
-                    if (this->stop_ && this->tasks_.empty()) return;
-                    task = std::move(this->tasks_.front());
-                    this->tasks_.pop();
+                    std::function<void()> task;
+                    {
+                        std::unique_lock<std::mutex> lock(this->tasks_mutex_);
+                        this->cv_.wait(lock,
+                            [this]{return this->stop_ || !this->tasks_.empty();});
+                        
+                        if (this->stop_ && this->tasks_.empty()) return;
+                        task = std::move(this->tasks_.front());
+                        this->tasks_.pop();
+                    }
+                    task();
                 }
-                task();
-            }
-        });
+            });
 }
 
 ThreadPool::~ThreadPool()

@@ -49,7 +49,7 @@ std::future<RETURN_TYPE> ThreadPool::add_task(Function&& f, Args&&... args)
     {
         std::unique_lock<std::mutex> lock(tasks_mutex_);
 
-        if (stop_) throw std::runtime_error("ThreadPool is stopped.");
+        if (stop_) throw std::runtime_error("ThreadPool is stopped");
 
         tasks_.emplace([task](){(*task)();});
     }
