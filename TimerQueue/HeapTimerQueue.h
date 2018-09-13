@@ -33,13 +33,13 @@ public:
     HeapTimerQueue(ThreadPool& pool);
     ~HeapTimerQueue();
 
-    void start_Engine();
+    void start_Engine(int interval_ms = 20);
     void stop_Engine(bool force = false);
     bool check_Engine();
 
     void flush_queue();
 
-    void add_Timer(int wait_time, std::function<void()> func);
+    void add_Timer(int wait_time_s, std::function<void()> func);
 
 private:
     ThreadPool& pool_;

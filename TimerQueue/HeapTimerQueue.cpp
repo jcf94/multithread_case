@@ -16,7 +16,7 @@ HeapTimerQueue::~HeapTimerQueue()
     if (engine_status_ != IDLE) stop_Engine(true);
 }
 
-void HeapTimerQueue::start_Engine()
+void HeapTimerQueue::start_Engine(int interval_ms)
 {
     if (engine_status_ != IDLE)
     {
@@ -26,13 +26,13 @@ void HeapTimerQueue::start_Engine()
 
     std::lock_guard<std::mutex> lock(engine_mutex_);
     engine_status_ = WORKING;
-    engine_thread_ = new std::thread([this]()
+    engine_thread_ = new std::thread([this, interval_ms]()
         {
             for (;;)
             {
                 this->flush_queue();
                 if (!this->check_Engine()) break;
-                std::this_thread::sleep_for(std::chrono::milliseconds(5));
+                std::this_thread::sleep_for(std::chrono::milliseconds(interval_ms));
             }
         });
 }
@@ -88,13 +88,13 @@ void HeapTimerQueue::flush_queue()
     }
 }
 
-void HeapTimerQueue::add_Timer(int wait_time, std::function<void()> func)
+void HeapTimerQueue::add_Timer(int wait_time_s, std::function<void()> func)
 {
     if (engine_status_ != ENDING)
     {
         int64_t start_time = Clock::get_CurrentTime();
 
         std::lock_guard<std::mutex> lock(list_mutex_);
-        list_.push({start_time + wait_time, func});
+        list_.push({start_time + wait_time_s*1000, func});
     }
 }
