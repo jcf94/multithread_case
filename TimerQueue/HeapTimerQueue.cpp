@@ -30,7 +30,7 @@ void HeapTimerQueue::start_Engine(int interval_ms)
         {
             for (;;)
             {
-                this->flush_queue();
+                this->pool_.add_task([this](){this->flush_queue();});
                 if (!this->check_Engine()) break;
                 std::this_thread::sleep_for(std::chrono::milliseconds(interval_ms));
             }
@@ -88,13 +88,13 @@ void HeapTimerQueue::flush_queue()
     }
 }
 
-void HeapTimerQueue::add_Timer(int wait_time_s, std::function<void()> func)
+void HeapTimerQueue::add_Timer(int wait_time_ms, std::function<void()> func)
 {
     if (engine_status_ != ENDING)
     {
         int64_t start_time = get_CurrentTime();
 
         std::lock_guard<std::mutex> lock(list_mutex_);
-        list_.push({start_time + wait_time_s*1000, func});
+        list_.push({start_time + wait_time_ms, func});
     }
 }

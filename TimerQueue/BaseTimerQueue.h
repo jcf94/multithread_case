@@ -32,9 +32,12 @@ class BaseTimerQueue
 {
 public:
     BaseTimerQueue(){}
-    virtual ~BaseTimerQueue(){}
+    virtual ~BaseTimerQueue(){};
 
-    void add_Timer(int wait_time, std::function<void()> func);
+    virtual void start_Engine(int interval_ms = 50) = 0;
+    virtual void stop_Engine(bool force = false) = 0;
+
+    virtual void add_Timer(int wait_time_ms, std::function<void()> func) = 0;
 
 protected:
 };
