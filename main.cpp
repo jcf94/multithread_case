@@ -13,6 +13,7 @@ PROG    : MAIN
 
 #include "ThreadPool/ThreadPool.h"
 #include "TimerQueue/HeapTimerQueue.h"
+#include "TimerQueue/WheelTimerQueue.h"
 
 using namespace std;
 
@@ -31,13 +32,14 @@ int main()
 
     // ------------------------------
 
-    HeapTimerQueue timequeue(pool);
+    //HeapTimerQueue timequeue(pool);
+    WheelTimerQueue timequeue(pool);
 
     timequeue.start_Engine();
 
-    timequeue.add_Timer(2, [](){printf("TimerQueue Hello World 1\n");});
-    timequeue.add_Timer(5, [](){printf("TimerQueue Hello World 2\n");});
-    timequeue.add_Timer(3, [](){printf("TimerQueue Hello World 3\n");});
+    timequeue.add_Timer(2000, [](){printf("TimerQueue Hello World 1\n");});
+    timequeue.add_Timer(5000, [](){printf("TimerQueue Hello World 2\n");});
+    timequeue.add_Timer(3000, [](){printf("TimerQueue Hello World 3\n");});
 
     timequeue.stop_Engine();
     
