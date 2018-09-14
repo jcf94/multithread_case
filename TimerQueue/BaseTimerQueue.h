@@ -32,7 +32,7 @@ class BaseTimerQueue
 {
 public:
     BaseTimerQueue(){}
-    virtual ~BaseTimerQueue(){};
+    virtual ~BaseTimerQueue() {}
 
     virtual void start_Engine(int interval_ms = 50) = 0;
     virtual void stop_Engine(bool force = false) = 0;
