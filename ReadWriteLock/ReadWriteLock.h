@@ -16,6 +16,11 @@ public:
     ReadWriteLock();
     ~ReadWriteLock();
 
+    ReadWriteLock(const ReadWriteLock&) = delete;
+    ReadWriteLock(ReadWriteLock&&) = delete;
+    ReadWriteLock& operator = (const ReadWriteLock&) = delete;
+    ReadWriteLock& operator = (ReadWriteLock&&) = delete;
+
     void getRead();
     void getWrite();
     void unlockRead();
