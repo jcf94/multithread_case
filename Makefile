@@ -5,7 +5,10 @@
 # ***********************************************
 
 CC=g++
-#FLAG=-g
+CFLAGS+=-std=c++14
+
+LD=g++
+LDFLAGS+=-lpthread
 
 SRCS=$(wildcard *.cpp */*.cpp)
 OBJS=$(patsubst %.cpp, %.o, $(SRCS))
@@ -14,10 +17,10 @@ TARGET=$(patsubst %.cpp, %, $(SRCS))
 all: main
 
 $(TARGET):$(OBJS)
-	$(CC) -o $@ $^ $(FLAG)
+	$(LD) -o $@ $^ $(LDFLAGS)
 
 %.o: %.cpp
-	$(CC) -o $@ -c $< $(FLAG)
+	$(CC) -o $@ -c $< $(CFLAGS)
 
 .PHONY: clean
 clean:
