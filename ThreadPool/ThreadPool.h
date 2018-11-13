@@ -28,7 +28,6 @@ public:
     void wait();
 
 private:
-    friend class ThreadRunner;
 
     std::vector<std::thread> runners_;
     std::queue<std::function<void()>> tasks_;
