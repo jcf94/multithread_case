@@ -12,7 +12,7 @@ PROG   : HEAPTIMERQUEUE_H
 #include <thread>
 
 #include "BaseTimerQueue.h"
-#include "../ThreadPool/ThreadPool.h"
+#include "../ThreadPool/src/ThreadPool.h"
 
 struct cmp
 {

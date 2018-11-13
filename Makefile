@@ -10,12 +10,14 @@ CFLAGS +=
 LD = g++
 LDFLAGS +=
 
-NAME=$(wildcard *.cpp)
-TARGET=$(patsubst %.cpp, %, $(NAME))
-SRCS=$(wildcard src/*.cpp)
-OBJS=$(patsubst %.cpp, %.o, $(SRCS))
+NAME = $(wildcard *.cpp)
+NAME-OBJS = $(patsubst %.cpp, %.o, $(NAME))
+TARGET = $(patsubst %.cpp, %, $(NAME))
 
-CLEAN-O = rm -f $(OBJS)
+SRCS = $(wildcard ReadWriteLock/*.cpp ThreadPool/src/*.cpp TimerQueue/*.cpp)
+SRCS-OBJS = $(patsubst %.cpp, %.o, $(SRCS))
+
+CLEAN-O = rm -f $(SRCS-OBJS) $(NAME-OBJS)
 
 release: CFLAGS += -O3
 release: LDFLAGS += -O3
@@ -31,7 +33,7 @@ all: $(TARGET)
 	@echo "|     Target Make Success      |"
 	@echo "=------------------------------="
 
-$(TARGET): $(OBJS) $(NAME)
+$(TARGET): $(SRCS-OBJS) $(NAME)
 	$(LD) -o $@ $^ $(LDFLAGS)
 
 %.o: %.cpp
@@ -47,6 +49,7 @@ clean:
 
 show:
 	@echo NAME: $(NAME)
+	@echo NAME-OBJS: $(NAME-OBJS)
 	@echo TARGET: $(TARGET)
 	@echo SRCS: $(SRCS)
-	@echo OBJS: $(OBJS)
+	@echo SRCS-OBJS: $(SRCS-OBJS)

@@ -8,7 +8,7 @@ PROG   : WHEELTIMERQUEUE_H
 #define WHEELTIMERQUEUE_H
 
 #include "BaseTimerQueue.h"
-#include "../ThreadPool/ThreadPool.h"
+#include "../ThreadPool/src/ThreadPool.h"
 
 #define SECOND 1000
 #define MINUTE 60000
